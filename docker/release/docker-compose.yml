@@ -1,0 +1,46 @@
+version: '2'
+
+services:
+  mongodb:
+    image: mongo
+    ports:
+      - "27017:27017"
+
+  mongo-seed:
+    build: 
+      context: ../../
+      dockerfile: db/mongo/docker/dev/Dockerfile
+    links:
+      - mongodb
+
+  agent:
+    image: ${DOCKER_REGISTRY}/${REPO_NAME}/ansible
+    links:
+      - mongodb
+    environment:
+      PROBE_HOST: "mongodb"
+      PROBE_PORT: "27017"
+    command: ["probe.yml"]
+
+  nodejs:
+    build: 
+      context: ../../
+      dockerfile: app/docker/dev/Dockerfile
+    links:
+      - mongodb
+      - mongo-seed
+    environment:
+      MONGODB_HOST: mongodb
+    ports:
+      - "3000:3000"
+
+  nginx:
+    build: 
+      context: ../../
+      dockerfile: web/docker/dev/Dockerfile
+    links:
+      - nodejs
+    environment:
+      NODEJS_IP_ADDRESS: $NODEJS_IP_ADDRESS
+    ports:
+      - "80:80"

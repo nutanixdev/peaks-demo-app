@@ -1,0 +1,10 @@
+mongodb:
+  image: mongo
+  ports:
+    - "27017:27017"
+
+mongo-seed:
+  build: ../../../../
+  dockerfile: db/mongo/docker/dev/Dockerfile
+  links:
+    - mongodb

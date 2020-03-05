@@ -1,0 +1,7 @@
+nginx:
+  build: ../../
+  dockerfile: docker/dev/Dockerfile
+  environment:
+    NODEJS_IP_ADDRESS: $NODEJS_IP_ADDRESS
+  ports:
+    - "80:80"
