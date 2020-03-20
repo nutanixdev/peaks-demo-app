@@ -55,13 +55,13 @@ build:
 	${CHECK} $(DEV_PROJECT) $(DEV_COMPOSE_FILE) builder
 	$(info "Copying application artifacts...")
 	@ docker cp $$(docker-compose -p $(DEV_PROJECT) -f $(DEV_COMPOSE_FILE) ps -q builder):/output/nodejs-app.tar.gz target
-	@ curl -uadmin:password -T target/nodejs-app.tar.gz "http://$(ARTIFACTORY_INSTANCE):8081/artifactory/$(REPO_NAME)-local-repo/$(REL_PROJECT)/nodejs-app.tar.gz"
+	@ curl -u$$ARTIFACTORY_USER:$$ARTIFACTORY_PASSWORD -T target/nodejs-app.tar.gz "http://$(ARTIFACTORY_INSTANCE):8081/artifactory/$(REPO_NAME)-local-repo/$(REL_PROJECT)/nodejs-app.tar.gz"
 	$(info "Copying web artifacts...")
 	@ tar -C web/src/ -cvzf target/web.tar.gz .
-	@ curl -uadmin:password -T target/web.tar.gz "http://$(ARTIFACTORY_INSTANCE):8081/artifactory/$(REPO_NAME)-local-repo/$(REL_PROJECT)/web.tar.gz"
+	@ curl -u$$ARTIFACTORY_USER:$$ARTIFACTORY_PASSWORD -T target/web.tar.gz "http://$(ARTIFACTORY_INSTANCE):8081/artifactory/$(REPO_NAME)-local-repo/$(REL_PROJECT)/web.tar.gz"
 	$(info "Copying db artifacts...")
 	@ tar -C db/mongo/data/ -cvzf target/db.tar.gz .
-	@ curl -uadmin:password -T target/db.tar.gz "http://$(ARTIFACTORY_INSTANCE):8081/artifactory/$(REPO_NAME)-local-repo/$(REL_PROJECT)/db.tar.gz"
+	@ curl -u$$ARTIFACTORY_USER:$$ARTIFACTORY_PASSWORD -T target/db.tar.gz "http://$(ARTIFACTORY_INSTANCE):8081/artifactory/$(REPO_NAME)-local-repo/$(REL_PROJECT)/db.tar.gz"
 	@ docker-compose -p $(DEV_PROJECT) -f $(DEV_COMPOSE_FILE) down -v
 	$(info "Build complete")
 
