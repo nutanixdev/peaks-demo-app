@@ -1,0 +1,16 @@
+type: PROVISION_K8S_SERVICE
+spec:
+  type: LoadBalancer
+  ports:
+  - protocol: TCP
+    targetPort: 27017
+    name: ''
+    port: 27017
+  selector:
+    app: 'mongodb_calm_@@{project_name}@@@@{build_number}@@'
+metadata:
+  labels:
+    app: 'mongodb_calm_@@{project_name}@@@@{build_number}@@'
+  namespace: default
+  name: 'mongodb-calm-lb-service-@@{calm_random}@@'
+

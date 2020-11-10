@@ -1,0 +1,16 @@
+type: PROVISION_K8S_SERVICE
+spec:
+  type: LoadBalancer
+  ports:
+  - protocol: TCP
+    targetPort: 80
+    name: ''
+    port: 80
+  selector:
+    app: 'nginx_calm_@@{project_name}@@@@{build_number}@@'
+metadata:
+  labels:
+    app: 'nginx_calm_@@{project_name}@@@@{build_number}@@'
+  namespace: default
+  name: 'nginx-calm-lb-service-@@{calm_random}@@'
+

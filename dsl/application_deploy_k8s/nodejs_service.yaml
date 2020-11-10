@@ -1,0 +1,16 @@
+type: PROVISION_K8S_SERVICE
+spec:
+  type: LoadBalancer
+  ports:
+  - protocol: TCP
+    targetPort: 3000
+    name: ''
+    port: 3000
+  selector:
+    app: 'nodejs_calm_@@{project_name}@@@@{build_number}@@'
+metadata:
+  labels:
+    app: 'nodejs_calm_@@{project_name}@@@@{build_number}@@'
+  namespace: default
+  name: 'nodejs-calm-lb-service-@@{calm_random}@@'
+

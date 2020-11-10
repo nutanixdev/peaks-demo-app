@@ -1,0 +1,27 @@
+type: PROVISION_K8S_DEPLOYMENT
+spec:
+  replicas: '1'
+  selector:
+    matchLabels:
+      app: 'mongodb_calm_@@{project_name}@@@@{build_number}@@'
+  template:
+    metadata:
+      labels:
+        app: 'mongodb_calm_@@{project_name}@@@@{build_number}@@'
+      namespace: default
+      name: MongoDBPod
+    type: PROVISION_K8S_POD
+    spec:
+      containers:
+      - name: mongo-db-container
+        ports:
+        - protocol: TCP
+          containerPort: 8080
+        image: '@@{docker_registry}@@/@@{project_name}@@/mongodb:0.1.@@{build_number}@@'
+        imagePullPolicy: Always
+      restartPolicy: Always
+      imagePullSecrets:
+      - name: 'docker-registry-cred-@@{cicd_app_name}@@'
+metadata:
+  namespace: default
+  name: 'k8s-mongodb-deployment-@@{calm_random}@@'

@@ -1,0 +1,30 @@
+type: PROVISION_K8S_DEPLOYMENT
+spec:
+  replicas: '1'
+  selector:
+    matchLabels:
+      app: 'nodejs_calm_@@{project_name}@@@@{build_number}@@'
+  template:
+    metadata:
+      labels:
+        app: 'nodejs_calm_@@{project_name}@@@@{build_number}@@'
+      namespace: default
+      name: NodeJSPod
+    type: PROVISION_K8S_POD
+    spec:
+      containers:
+      - name: nodejs-container
+        ports:
+        - protocol: TCP
+          containerPort: 8080
+        env:
+        - name: MONGODB_HOST
+          value: '@@{mongo_db_deploymentPublished_Service.ingress}@@'
+        image: '@@{docker_registry}@@/@@{project_name}@@/nodejs:0.1.@@{build_number}@@'
+        imagePullPolicy: Always
+      restartPolicy: Always
+      imagePullSecrets:
+      - name: 'docker-registry-cred-@@{cicd_app_name}@@'
+metadata:
+  namespace: default
+  name: 'k8s-nodejs-deployment-@@{calm_random}@@'
