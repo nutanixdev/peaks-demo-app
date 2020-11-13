@@ -51,7 +51,7 @@ build:
 	$(info "Pull Calm DSL image...")
 	@ docker pull ntnx/calm-dsl
 	$(info "Start Calm DSL container...")
-	@ docker run -d -t --env-file ~/calm/env.cfg -v ~/calm/config:/root/.calm -v $(shell pwd)/dsl:/root/dsl --name calm-dsl-$(REPO_NAME) ntnx/calm-dsl
+	@ docker run -d -t --env-file ~/calm/$(BLUEPRINT_NAME)_env.cfg -v ~/calm/config:/root/.calm -v $(shell pwd)/dsl:/root/dsl --name calm-dsl-$(REPO_NAME) ntnx/calm-dsl
 	$(info "Update Calm DSL cache...")
 	@ docker exec calm-dsl-$(REPO_NAME) calm update cache
 	$(info "Create Calm DSL blueprint...")
