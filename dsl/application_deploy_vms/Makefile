@@ -82,12 +82,12 @@ release:
 
 clean:
 	$(info "Destroying development environment...")
-	@ docker kill calm-dsl-$(REPO_NAME)
-	@ docker rm calm-dsl-$(REPO_NAME)
 	@ docker-compose -p $(DEV_PROJECT) -f $(DEV_COMPOSE_FILE) down -v
 	@ docker-compose -p $(REL_PROJECT) -f $(REL_COMPOSE_FILE) down -v
 	$(info "Removing dangling images...")
 	@ docker images -q -f dangling=true -f label=application=$(REPO_NAME) | xargs -I ARGS docker rmi -f ARGS
+	@ docker kill calm-dsl-$(REPO_NAME)
+	@ docker rm calm-dsl-$(REPO_NAME)
 	$(info "Clean complete")
 
 tag: 
