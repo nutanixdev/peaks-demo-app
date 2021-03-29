@@ -49,13 +49,13 @@ test:
 
 build:
 	$(info "Pull Calm DSL image...")
-	@ docker pull ntnx/calm-dsl:3.0.0-alpha.2021.01.25.commit.3dbf592
+	@ docker pull ntnx/calm-dsl
 	$(info "Start Calm DSL container...")
-	@ docker run -d -t --env-file ~/calm/$(BLUEPRINT_NAME)_env.cfg -v ~/calm/config:/root/.calm -v $(shell pwd)/dsl:/root/dsl --name calm-dsl-$(REPO_NAME) ntnx/calm-dsl:3.0.0-alpha.2021.01.25.commit.3dbf592
+	@ docker run -d -t --env-file ~/calm/$(BLUEPRINT_NAME)_env.cfg -v ~/calm/config:/root/.calm -v $(shell pwd)/dsl:/root/dsl --name calm-dsl-$(REPO_NAME) ntnx/calm-dsl
 	$(info "Update Calm DSL cache...")
 	@ docker exec calm-dsl-$(REPO_NAME) calm update cache
 	$(info "Create Calm DSL blueprint...")
-	@ docker exec calm-dsl-$(REPO_NAME) calm create bp -f dsl/$(BLUEPRINT_NAME)/blueprint.py --name "$(BLUEPRINT_NAME)" -fc
+	@ docker exec calm-dsl-$(REPO_NAME) calm create bp -f /root/dsl/$(BLUEPRINT_NAME)/blueprint.py --name "$(BLUEPRINT_NAME)" -fc
 	$(info "Creating builder image...")
 	@ docker-compose -p $(DEV_PROJECT) -f $(DEV_COMPOSE_FILE) build builder
 	$(info "Building application artifacts...")
