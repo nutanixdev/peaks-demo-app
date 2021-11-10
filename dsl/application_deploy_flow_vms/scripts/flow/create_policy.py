@@ -48,7 +48,7 @@ payload = {
                     },
                     {
                         "ip_subnet": {
-                            "ip": "10.59.98.214",
+                            "ip": "@@{pc_instance_ip}@@",
                             "prefix_length": 32
                         },
                         "peer_specification_type": "IP_SUBNET",
