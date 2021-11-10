@@ -212,6 +212,7 @@ class MongoDBAhvVmResources(AhvVmResources):
 class MongoDBAhvVm(AhvVm):
 
     resources = MongoDBAhvVmResources
+    categories = {"AppType": "Mongo_Deployment"}
 
 
 class MongoDBVM(Substrate):
@@ -336,6 +337,7 @@ class NodeJSAhvVmResources(AhvVmResources):
 class NodeJSAhvVm(AhvVm):
 
     resources = NodeJSAhvVmResources
+    categories = {"AppType": "Node.js_Deployment"}
 
 
 class NodeJSVM(Substrate):
