@@ -271,14 +271,6 @@ class NodeJS(Service):
         )
     
     @action
-    def NPMInstallation(name="NPM Installation"):
-        CalmTask.Exec.ssh(
-            name="Install NPM", 
-            filename="scripts/nodejs/install_npm.sh", 
-            cred=NutanixCred
-        )
-    
-    @action
     def NodejsDeploymentCategoryUpdate(name="NodeJS Deployment Category Update"):
         CalmTask.Exec.escript(
             name="Add Category Value to VM", 

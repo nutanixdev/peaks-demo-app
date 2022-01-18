@@ -502,14 +502,6 @@ class NodeJS(Service):
         )
     
     @action
-    def NPMInstallation():
-        CalmTask.Exec.ssh(
-            name="Install NPM", 
-            filename="scripts/nodejs/install_npm.sh", 
-            cred=NutanixCred
-        )
-    
-    @action
     def NodejsMongoInstallForTesting():
         CalmTask.Exec.ssh(
             name="Nodejs Install Mongo", 
