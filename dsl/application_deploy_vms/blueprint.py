@@ -353,8 +353,6 @@ class Default(Profile):
         NutanixPublicKey, 
         label="Nutanix Public Key", 
         is_hidden=True, 
-        is_mandatory=True, 
-        runtime=True,
         description="SSH public key for the Nutanix user."
     )
     domain_name = CalmVariable.Simple(
