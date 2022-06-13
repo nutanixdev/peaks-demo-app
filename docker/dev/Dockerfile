@@ -1,4 +1,4 @@
-FROM node:7
+FROM node:17
 RUN mkdir -p /usr/src/app/tests
 RUN mkdir /output
 COPY app/src /usr/src/app/

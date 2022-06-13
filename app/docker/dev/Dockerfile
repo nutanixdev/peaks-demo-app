@@ -1,4 +1,4 @@
-FROM node:7
+FROM node:17
 ARG VERSION=1.0.0
 ENV NODE_ENV production
 COPY app/src /usr/src/app/
