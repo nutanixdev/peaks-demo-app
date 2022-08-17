@@ -1,9 +1,8 @@
-echo "Mongo DB Virtual Server: @@{MongoDB.f5_virtual_name}@@"
 sudo mkdir -p /var/www/html/
 
 echo '#!/bin/bash
-export MONGODB_HOST='@@{MongoDBF5.f5_vs_ip}@@'
-/usr/bin/node /var/www/html/app.js' | sudo tee /var/www/html/runnode.sh
+export MONGODB_HOST='@@{Mongo DB.address}@@'
+/usr/local/nodejs/bin/node /var/www/html/app.js' | sudo tee /var/www/html/runnode.sh
 
 sudo chmod 700 /var/www/html/runnode.sh
 
@@ -15,7 +14,7 @@ ExecStart=/var/www/html/runnode.sh
 Restart=always
 User=root
 Group=root
-Environment=PATH=/usr/bin:/usr/local/bin
+Environment=PATH=/usr/bin:/usr/local/bin:/usr/local/nodejs/bin
 Environment=NODE_ENV=production
 WorkingDirectory=/var/www/html
 
