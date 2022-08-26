@@ -30,6 +30,11 @@ if file_exists(os.path.join(init_data["LOCAL_DIR"]["location"], "domain_name")):
 else:
     DomainName = ""
 
+if file_exists(os.path.join(init_data["LOCAL_DIR"]["location"], "cluster_name")):
+    ClusterName = read_local_file("cluster_name")
+else:
+    ClusterName = ""
+
 NutanixPublicKey = read_local_file("nutanix_public_key")
 NutanixUser = read_local_file("nutanix_user")
 NutanixKey = read_local_file("nutanix_key")
@@ -308,6 +313,7 @@ class MongoDBAhvVmResources(AhvVmResources):
 class MongoDBAhvVm(AhvVm):
 
     resources = MongoDBAhvVmResources
+    cluster = Ref.Cluster(name=ClusterName)
 
 
 class MongoDBVM(Substrate):
@@ -583,6 +589,7 @@ class NodeJSAhvVmResources(AhvVmResources):
 class NodeJSAhvVm(AhvVm):
 
     resources = NodeJSAhvVmResources
+    cluster = Ref.Cluster(name=ClusterName)
 
 
 class NodeJSVM(Substrate):
@@ -847,6 +854,7 @@ class NginxAhvVmResources(AhvVmResources):
 class NginxAhvVm(AhvVm):
 
     resources = NginxAhvVmResources
+    cluster = Ref.Cluster(name=ClusterName)
 
 
 class NginxVM(Substrate):
