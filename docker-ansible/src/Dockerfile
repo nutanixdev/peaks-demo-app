@@ -1,4 +1,4 @@
-FROM ubuntu:trusty
+FROM ubuntu:kinetic
 ENV TERM=xterm-256color
 RUN apt-get update -qy && \
     apt-get install -qy software-properties-common && \
