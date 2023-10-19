@@ -48,6 +48,14 @@ test:
 	$(info "Testing complete")
 
 build:
+	$(info "Pull Calm DSL image...")
+	@ docker pull ntnx/calm-dsl
+	$(info "Start Calm DSL container...")
+	@ docker run -d -t --env-file ~/calm/$(BLUEPRINT_NAME)_env.cfg -v ~/calm/config:/root/.calm -v $(shell pwd)/dsl:/root/dsl --name calm-dsl-$(REPO_NAME) ntnx/calm-dsl
+	$(info "Update Calm DSL cache...")
+	@ docker exec calm-dsl-$(REPO_NAME) calm update cache
+	$(info "Create Calm DSL blueprint...")
+	@ docker exec calm-dsl-$(REPO_NAME) calm create bp -f /root/dsl/$(BLUEPRINT_NAME)/blueprint.py --name "$(BLUEPRINT_NAME)_$(REL_PROJECT)" -fc
 	$(info "Creating builder image...")
 	@ docker-compose -p $(DEV_PROJECT) -f $(DEV_COMPOSE_FILE) build builder
 	$(info "Building application artifacts...")
@@ -78,6 +86,8 @@ clean:
 	@ docker-compose -p $(REL_PROJECT) -f $(REL_COMPOSE_FILE) down -v
 	$(info "Removing dangling images...")
 	@ docker images -q -f dangling=true -f label=application=$(REPO_NAME) | xargs -I ARGS docker rmi -f ARGS
+	@ docker kill calm-dsl-$(REPO_NAME)
+	@ docker rm calm-dsl-$(REPO_NAME)
 	$(info "Clean complete")
 
 tag: 
@@ -94,11 +104,17 @@ login:
 	$(info "Logging in to Docker registry $(DOCKER_REGISTRY)...")
 	@ docker login -u $$DOCKER_REGISTRY_USER -p $$DOCKER_REGISTRY_PASSWORD $(DOCKER_REGISTRY)
 	$(info "Logged in to Docker registry $(DOCKER_REGISTRY)")
+	$(info "Logging in to Docker Hub ...")
+	@ docker login -u $$DOCKER_HUB_USER -p $$DOCKER_HUB_PASSWORD
+	$(info "Logged in to Docker Hub")
 
 logout:
 	$(info "Logging out of Docker registry $(DOCKER_REGISTRY)...")
 	@ docker logout $(DOCKER_REGISTRY)
 	$(info "Logged out of Docker registry $(DOCKER_REGISTRY)")
+	$(info "Logging out of Docker Hub...")
+	@ docker logout
+	$(info "Logged out of Docker Hub")
 
 publish:
 	$(info "Publishing release image $(DB_IMAGE_ID) to $(DOCKER_REGISTRY)/$(ORG_NAME)/$(DB_SERVICE_NAME)...")
