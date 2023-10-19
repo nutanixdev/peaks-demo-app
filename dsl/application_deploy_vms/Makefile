@@ -55,7 +55,7 @@ build:
 	$(info "Update Calm DSL cache...")
 	@ docker exec calm-dsl-$(REPO_NAME) calm update cache
 	$(info "Create Calm DSL blueprint...")
-	@ docker exec calm-dsl-$(REPO_NAME) calm create bp -f /root/dsl/$(BLUEPRINT_NAME)/blueprint.py --name "$(BLUEPRINT_NAME)_$(REL_PROJECT)$(BUILD_ID)" -fc
+	@ docker exec calm-dsl-$(REPO_NAME) calm create bp -f /root/dsl/$(BLUEPRINT_NAME)/blueprint.py --name "$(BLUEPRINT_NAME)_$(REL_PROJECT)" -fc
 	$(info "Creating builder image...")
 	@ docker-compose -p $(DEV_PROJECT) -f $(DEV_COMPOSE_FILE) build builder
 	$(info "Building application artifacts...")
