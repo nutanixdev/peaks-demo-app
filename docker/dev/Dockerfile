@@ -9,4 +9,4 @@ RUN npm update
 RUN npm install
 WORKDIR /usr/src/app/tests
 RUN npm install
-CMD ["npm", "test"]
+RUN npm run test

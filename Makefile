@@ -69,7 +69,7 @@ release:
 	$(info "Pulling latest images...")
 	@ docker-compose -p $(REL_PROJECT) -f $(REL_COMPOSE_FILE) build nginx
 	@ docker-compose -p $(REL_PROJECT) -f $(REL_COMPOSE_FILE) run --rm agent
-	@ docker-compose -p $(REL_PROJECT) -f $(REL_COMPOSE_FILE) run -d nginx
+	@ docker-compose -p $(REL_PROJECT) -f $(REL_COMPOSE_FILE) up -d nginx
 	$(info "Acceptance testing complete")
 
 clean:
