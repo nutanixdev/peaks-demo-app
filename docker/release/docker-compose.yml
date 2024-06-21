@@ -2,7 +2,7 @@ version: '2'
 
 services:
   mongodb:
-    image: mongo:5.0.11
+    image: mongo:jammy
     ports:
       - "27017:27017"
 
@@ -12,15 +12,6 @@ services:
       dockerfile: db/mongo/docker/dev/Dockerfile
     links:
       - mongodb
-
-  agent:
-    image: ${DOCKER_REGISTRY}/${REPO_NAME}/ansible
-    links:
-      - mongodb
-    environment:
-      PROBE_HOST: "mongodb"
-      PROBE_PORT: "27017"
-    command: ["probe.yml"]
 
   nodejs:
     build: 

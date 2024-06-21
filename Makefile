@@ -40,8 +40,6 @@ test:
 	@ docker compose -p $(DEV_PROJECT) -f $(DEV_COMPOSE_FILE) pull
 	$(info "Building images...")
 	@ docker compose -p $(DEV_PROJECT) -f $(DEV_COMPOSE_FILE) build --pull test
-	$(info "Ensuring database is ready...")
-	@ docker compose -p $(DEV_PROJECT) -f $(DEV_COMPOSE_FILE) run --rm agent
 	$(info "Running tests...")
 	@ docker compose -p $(DEV_PROJECT) -f $(DEV_COMPOSE_FILE) up test
 	${CHECK} $(DEV_PROJECT) $(DEV_COMPOSE_FILE) test
@@ -76,7 +74,6 @@ build:
 release:
 	$(info "Pulling latest images...")
 	@ docker compose -p $(REL_PROJECT) -f $(REL_COMPOSE_FILE) build nginx
-	@ docker compose -p $(REL_PROJECT) -f $(REL_COMPOSE_FILE) run --rm agent
 	@ docker compose -p $(REL_PROJECT) -f $(REL_COMPOSE_FILE) up -d nginx
 	$(info "Acceptance testing complete")
 
