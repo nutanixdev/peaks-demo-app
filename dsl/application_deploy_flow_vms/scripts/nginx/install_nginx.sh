@@ -1,10 +1,10 @@
-sudo yum install -y epel-release
-sudo yum install -y nginx
+sudo apt update -y
+sudo apt install -y nginx
 
-sudo systemctl start nginx
+sudo ufw allow 'Nginx HTTP'
 
-sudo firewall-cmd --permanent --zone=public --add-service=http 
-sudo firewall-cmd --permanent --zone=public --add-service=https
-sudo firewall-cmd --reload
+sudo service nginx restart
 
-sudo yum install -y wget
+sudo apt install -y wget
+
+echo "complete"

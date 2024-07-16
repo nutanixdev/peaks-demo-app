@@ -61,11 +61,10 @@ ArtifactoryCred = basic_cred(
                     default=False
                 )
 
-Centos74_Image = vm_disk_package(
-                    name="centos7_generic", 
-                    config_file="image_configs/centos74_disk.yaml"
+Ubuntu22_04_Image = vm_disk_package(
+                    name="ubuntu22_04",
+                    config_file="image_configs/ubuntu22_disk.yaml"
                 )
-
 
 class Flow(Service):
     name = "Flow"
@@ -161,6 +160,11 @@ class MongoDB(Service):
     @action
     def MongoDBInstallation(name="Mongo DB Installation"):
         CalmTask.Exec.ssh(
+            name="Setup MongoDB Repo",
+            filename="scripts/mongodb/setup_mongodb_repo.sh",
+            cred=NutanixCred
+        )
+        CalmTask.Exec.ssh(
             name="Intall MongoDB", 
             filename="scripts/mongodb/install_mongodb.sh", 
             cred=NutanixCred
@@ -203,7 +207,7 @@ class MongoDBAhvVmResources(AhvVmResources):
     vCPUs = 1
     cores_per_vCPU = 1
     disks = [
-        AhvVmDisk.Disk.Scsi.cloneFromVMDiskPackage(Centos74_Image, bootable=True)
+        AhvVmDisk.Disk.Scsi.cloneFromVMDiskPackage(Ubuntu22_04_Image, bootable=True)
     ]
     nics = [
         AhvVmNic.NormalNic(NetworkConfig),
@@ -290,6 +294,11 @@ class NodeJS(Service):
     @action
     def NodejsMongoInstallForTesting(name="NodeJS Mongo DB Installation For Testing"):
         CalmTask.Exec.ssh(
+            name="Nodejs Setup Mongo Repo",
+            filename="scripts/nodejs/nodejs_setup_mongo_repo.sh",
+            cred=NutanixCred
+        )
+        CalmTask.Exec.ssh(
             name="Nodejs Install Mongo", 
             filename="scripts/nodejs/nodejs_install_mongo.sh", 
             cred=NutanixCred
@@ -321,7 +330,7 @@ class NodeJSAhvVmResources(AhvVmResources):
     vCPUs = 1
     cores_per_vCPU = 1
     disks = [
-        AhvVmDisk.Disk.Scsi.cloneFromVMDiskPackage(Centos74_Image, bootable=True)
+        AhvVmDisk.Disk.Scsi.cloneFromVMDiskPackage(Ubuntu22_04_Image, bootable=True)
     ]
     nics = [
         AhvVmNic.NormalNic(NetworkConfig),
@@ -414,7 +423,7 @@ class NginxAhvVmResources(AhvVmResources):
     vCPUs = 1
     cores_per_vCPU = 1
     disks = [
-        AhvVmDisk.Disk.Scsi.cloneFromVMDiskPackage(Centos74_Image, bootable=True)
+        AhvVmDisk.Disk.Scsi.cloneFromVMDiskPackage(Ubuntu22_04_Image, bootable=True)
     ]
     nics = [
         AhvVmNic.NormalNic(NetworkConfig),
@@ -558,7 +567,7 @@ class ApplicationDeploymentFlowVMs(Blueprint):
             MongoDBPackage,
             NodeJSPackage,
             NginxPackage,
-            Centos74_Image
+            Ubuntu22_04_Image
             ]
     credentials = [NutanixCred,
             PrismCentralCred,
