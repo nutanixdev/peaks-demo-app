@@ -9,5 +9,5 @@ url = "https://@@{pc_instance_ip}@@:9440/api/nutanix/v3/network_security_rules/@
 headers = {'Accept': 'application/json', 'Content-Type': 'application/json'}
 url_method = "DELETE"
 r = process_request(url, url_method, user, password, headers)
-print "Response Status: " + str(r.status_code)
+print("Response Status: " + str(r.status_code))
 

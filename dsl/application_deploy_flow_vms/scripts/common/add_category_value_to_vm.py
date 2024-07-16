@@ -13,7 +13,7 @@ headers = {'Accept': 'application/json', 'Content-Type': 'application/json'}
 url_method = "POST"
 
 r = process_request(url, url_method, user, password, headers, json.dumps(payload))
-print "Response Status: " + str(r.status_code)
+print("Response Status: " + str(r.status_code))
 vm_list_json = r.json()
 for vm in vm_list_json['entities']:
   if (vm['spec']['name'] == "@@{name}@@"):
@@ -21,12 +21,12 @@ for vm in vm_list_json['entities']:
 
 del vm_json['status']
 vm_json['metadata']['categories']['Deployment'] = "@@{calm_application_name}@@"
-print "Categories: " + json.dumps(vm_json['metadata']['categories'])
-print "VM JSON: " + json.dumps(vm_json)
+print("Categories: " + json.dumps(vm_json['metadata']['categories']))
+print("VM JSON: " + json.dumps(vm_json))
 
 url = base_url + "/" + str(vm_json['metadata']['uuid'])
 url_method = "PUT"
 r = process_request(url, url_method, user, password, headers, json.dumps(vm_json))
-print "Response Status: " + str(r.status_code)
-print "Response: ", r.json()
+print("Response Status: " + str(r.status_code))
+print("Response: ", r.json())
 

@@ -10,7 +10,7 @@ headers = {'Accept': 'application/json', 'Content-Type': 'application/json'}
 url_method = "PUT"
 payload = {"name": "Deployment","description":"Deployment"}
 r = process_request(url, url_method, user, password, headers, json.dumps(payload))
-print "Response Status: " + str(r.status_code)
-print "Response: ", r.json()
+print("Response Status: " + str(r.status_code))
+print("Response: ", r.json())
 
 

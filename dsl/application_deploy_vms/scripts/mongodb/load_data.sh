@@ -9,5 +9,5 @@ echo "Unpack MongoDB insert script"
 sudo tar xvfz /tmp/db.tar.gz -C /tmp/
 
 echo "Load MongoDB data"
-mongo demodb < /tmp/collections.json
+mongosh demodb < /tmp/collections.json
 

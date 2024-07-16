@@ -10,14 +10,14 @@ headers = {'Accept': 'application/json', 'Content-Type': 'application/json'}
 url_method = "PUT"
 payload = {"value": "Mongo_Deployment","description":"Mongo_Deployment deployment"}
 r = process_request(url, url_method, user, password, headers, json.dumps(payload))
-print "Response Status: " + str(r.status_code)
-print "Response: ", r.json()
+print("Response Status: " + str(r.status_code))
+print("Response: ", r.json())
 
 url = "https://@@{pc_instance_ip}@@:9440/api/nutanix/v3/categories/AppType/Node.js_Deployment"
 headers = {'Accept': 'application/json', 'Content-Type': 'application/json'}
 url_method = "PUT"
 payload = {"value": "Node.js_Deployment","description":"Node.js_Deployment deployment"}
 r = process_request(url, url_method, user, password, headers, json.dumps(payload))
-print "Response Status: " + str(r.status_code)
-print "Response: ", r.json()
+print("Response Status: " + str(r.status_code))
+print("Response: ", r.json())
 
