@@ -25,6 +25,6 @@ cd /var/www/html/
 sudo wget --user @@{Artifactory Credential.username}@@ --password @@{Artifactory Credential.secret}@@ -O /var/www/html/nodejs-app.tar.gz http://@@{artifactory_ip}@@:8081/artifactory/@@{project_name}@@-local-repo/@@{project_name}@@@@{build_number}@@/nodejs-app.tar.gz
 sudo tar xvfz /var/www/html/nodejs-app.tar.gz
 
-sudo systemctl start nodejsapp
 sudo systemctl enable nodejsapp
+sudo service nodejsapp restart
 

@@ -60,9 +60,9 @@ ArtifactoryCred = basic_cred(
                     default=False
                 )
 
-Centos74_Image = vm_disk_package(
-                    name="centos7_generic", 
-                    config_file="image_configs/centos74_disk.yaml"
+Ubuntu22_04_Image = vm_disk_package(
+                    name="ubuntu22_04",
+                    config_file="image_configs/ubuntu22_disk.yaml"
                 )
 
 
@@ -70,7 +70,34 @@ class MongoDB(Service):
     name = "Mongo DB"
 
     @action
+    def UpgradeandRestartVM(name="Upgrade and Restart VM"):
+
+        CalmTask.Exec.ssh(
+            name="Upgrade",
+            filename="scripts/upgrade_restart.sh",
+            cred=NutanixCred
+        )
+        CalmTask.Delay(
+            name="Wait for Restart",
+            delay_seconds=90,
+            target=ref(MongoDB)
+        )
+
+    @action
+    def ConfigureDisk(name="Configure Disk"):
+        CalmTask.Exec.ssh(
+            name="Configure LVM Disk",
+            filename="scripts/configure_disk.sh",
+            cred=NutanixCred
+        )
+
+    @action
     def MongoDBInstallation(name="Mongo DB Installation"):
+        CalmTask.Exec.ssh(
+            name="Setup MongoDB Repo", 
+            filename="scripts/mongodb/setup_mongodb_repo.sh",
+            cred=NutanixCred
+        )
         CalmTask.Exec.ssh(
             name="Intall MongoDB", 
             filename="scripts/mongodb/install_mongodb.sh", 
@@ -93,6 +120,8 @@ class MongoDBPackage(Package):
 
     @action
     def __install__():
+        MongoDB.ConfigureDisk(name="Configure Disk")
+        MongoDB.UpgradeandRestartVM(name="Upgrade and Resart VM")
         MongoDB.MongoDBInstallation(name="MongoDB Installation")
         MongoDB.MongoDBLoad(name="MongoDB Load")
 
@@ -103,7 +132,8 @@ class MongoDBAhvVmResources(AhvVmResources):
     vCPUs = 1
     cores_per_vCPU = 1
     disks = [
-        AhvVmDisk.Disk.Scsi.cloneFromVMDiskPackage(Centos74_Image, bootable=True)
+        AhvVmDisk.Disk.Scsi.cloneFromVMDiskPackage(Ubuntu22_04_Image, bootable=True),
+        AhvVmDisk.Disk.Scsi.allocateOnStorageContainer(30),
     ]
     nics = [
         AhvVmNic.NormalNic(NetworkConfig),
@@ -159,6 +189,28 @@ class NodeJS(Service):
     dependencies = [ref(MongoDBDeployment)]
 
     @action
+    def UpgradeandRestartVM(name="Upgrade and Restart VM"):
+
+        CalmTask.Exec.ssh(
+            name="Upgrade",
+            filename="scripts/upgrade_restart.sh",
+            cred=NutanixCred
+        )
+        CalmTask.Delay(
+            name="Wait for Restart",
+            delay_seconds=90,
+            target=ref(NodeJS)
+        )
+
+    @action
+    def ConfigureDisk(name="Configure Disk"):
+        CalmTask.Exec.ssh(
+            name="Configure LVM Disk",
+            filename="scripts/configure_disk.sh",
+            cred=NutanixCred
+        )
+
+    @action
     def NodeJSInstallation(name="NodeJS Installation"):
         CalmTask.Exec.ssh(
             name="Intall NodeJS", 
@@ -177,6 +229,11 @@ class NodeJS(Service):
     @action
     def NodejsMongoInstallForTesting(name="NodeJS Mongo DB Installation For Testing"):
         CalmTask.Exec.ssh(
+            name="Nodejs Setup Mongo Repo", 
+            filename="scripts/nodejs/nodejs_setup_mongo_repo.sh", 
+            cred=NutanixCred
+        )
+        CalmTask.Exec.ssh(
             name="Nodejs Install Mongo", 
             filename="scripts/nodejs/nodejs_install_mongo.sh", 
             cred=NutanixCred
@@ -194,6 +251,8 @@ class NodeJSPackage(Package):
 
     @action
     def __install__():
+        NodeJS.ConfigureDisk(name="Configure Disk")
+        NodeJS.UpgradeandRestartVM(name="Upgrade and Resart VM")
         NodeJS.NodeJSInstallation(name="NodeJS Installation")
         NodeJS.NodejsMongoInstallForTesting(name="Nodejs Mongo Install for Testing")
 
@@ -204,7 +263,8 @@ class NodeJSAhvVmResources(AhvVmResources):
     vCPUs = 1
     cores_per_vCPU = 1
     disks = [
-        AhvVmDisk.Disk.Scsi.cloneFromVMDiskPackage(Centos74_Image, bootable=True)
+        AhvVmDisk.Disk.Scsi.cloneFromVMDiskPackage(Ubuntu22_04_Image, bootable=True),
+        AhvVmDisk.Disk.Scsi.allocateOnStorageContainer(30),
     ]
     nics = [
         AhvVmNic.NormalNic(NetworkConfig),
@@ -260,6 +320,28 @@ class Nginx(Service):
     dependencies = [ref(NodeJSDeployment)]
 
     @action
+    def UpgradeandRestartVM(name="Upgrade and Restart VM"):
+
+        CalmTask.Exec.ssh(
+            name="Upgrade",
+            filename="scripts/upgrade_restart.sh",
+            cred=NutanixCred
+        )
+        CalmTask.Delay(
+            name="Wait for Restart",
+            delay_seconds=90,
+            target=ref(Nginx)
+        )
+
+    @action
+    def ConfigureDisk(name="Configure Disk"):
+        CalmTask.Exec.ssh(
+            name="Configure LVM Disk",
+            filename="scripts/configure_disk.sh",
+            cred=NutanixCred
+        )
+
+    @action
     def NginxInstallation(name="Nginx Installation"):
         CalmTask.Exec.ssh(
             name="Intall Nginx", 
@@ -287,6 +369,8 @@ class NginxPackage(Package):
 
     @action
     def __install__():
+        Nginx.ConfigureDisk(name="Configure Disk")
+        Nginx.UpgradeandRestartVM(name="Upgrade and Resart VM")
         Nginx.NginxInstallation(name="Nginx Installation")
 
 
@@ -296,7 +380,8 @@ class NginxAhvVmResources(AhvVmResources):
     vCPUs = 1
     cores_per_vCPU = 1
     disks = [
-        AhvVmDisk.Disk.Scsi.cloneFromVMDiskPackage(Centos74_Image, bootable=True)
+        AhvVmDisk.Disk.Scsi.cloneFromVMDiskPackage(Ubuntu22_04_Image, bootable=True),
+        AhvVmDisk.Disk.Scsi.allocateOnStorageContainer(30),
     ]
     nics = [
         AhvVmNic.NormalNic(NetworkConfig),
@@ -385,7 +470,7 @@ class Default(Profile):
         description="IP address of the Prism Central instance that manages this Calm instance."
     )
     project_name = CalmVariable.Simple.string(
-        "devops",
+        "vmsdsl",
         label="Project Name",
         is_mandatory=True,
         runtime=True,
@@ -437,7 +522,7 @@ class ApplicationDeploymentVMs(Blueprint):
             MongoDBPackage,
             NodeJSPackage,
             NginxPackage,
-            Centos74_Image
+            Ubuntu22_04_Image
             ]
     credentials = [
             NutanixCred,
