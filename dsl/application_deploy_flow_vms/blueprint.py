@@ -158,6 +158,28 @@ class MongoDB(Service):
     dependencies = [ref(FlowDeployment)]
 
     @action
+    def UpgradeandRestartVM(name="Upgrade and Restart VM"):
+
+        CalmTask.Exec.ssh(
+            name="Upgrade",
+            filename="scripts/upgrade_restart.sh",
+            cred=NutanixCred
+        )
+        CalmTask.Delay(
+            name="Wait for Restart",
+            delay_seconds=90,
+            target=ref(MongoDB)
+        )
+
+    @action
+    def ConfigureDisk(name="Configure Disk"):
+        CalmTask.Exec.ssh(
+            name="Configure LVM Disk",
+            filename="scripts/configure_disk.sh",
+            cred=NutanixCred
+        )
+
+    @action
     def MongoDBInstallation(name="Mongo DB Installation"):
         CalmTask.Exec.ssh(
             name="Setup MongoDB Repo",
@@ -197,6 +219,8 @@ class MongoDBPackage(Package):
 
     @action
     def __install__():
+        MongoDB.ConfigureDisk(name="Configure Disk")
+        MongoDB.UpgradeandRestartVM(name="Upgrade and Resart VM")
         MongoDB.MongoDBInstallation(name="MongoDB Installation")
         MongoDB.MongoDBLoad(name="MongoDB Load")
 
@@ -264,6 +288,28 @@ class NodeJS(Service):
     dependencies = [ref(MongoDBDeployment)]
 
     @action
+    def UpgradeandRestartVM(name="Upgrade and Restart VM"):
+
+        CalmTask.Exec.ssh(
+            name="Upgrade",
+            filename="scripts/upgrade_restart.sh",
+            cred=NutanixCred
+        )
+        CalmTask.Delay(
+            name="Wait for Restart",
+            delay_seconds=90,
+            target=ref(NodeJS)
+        )
+
+    @action
+    def ConfigureDisk(name="Configure Disk"):
+        CalmTask.Exec.ssh(
+            name="Configure LVM Disk",
+            filename="scripts/configure_disk.sh",
+            cred=NutanixCred
+        )
+
+    @action
     def NodeJSInstallation(name="NodeJS Installation"):
         CalmTask.Exec.ssh(
             name="Intall NodeJS", 
@@ -320,6 +366,8 @@ class NodeJSPackage(Package):
 
     @action
     def __install__():
+        NodeJS.ConfigureDisk(name="Configure Disk")
+        NodeJS.UpgradeandRestartVM(name="Upgrade and Resart VM")
         NodeJS.NodeJSInstallation(name="NodeJS Installation")
         NodeJS.NodejsMongoInstallForTesting(name="Nodejs Mongo Install for Testing")
 
@@ -387,6 +435,28 @@ class Nginx(Service):
     dependencies = [ref(NodeJSDeployment)]
 
     @action
+    def UpgradeandRestartVM(name="Upgrade and Restart VM"):
+
+        CalmTask.Exec.ssh(
+            name="Upgrade",
+            filename="scripts/upgrade_restart.sh",
+            cred=NutanixCred
+        )
+        CalmTask.Delay(
+            name="Wait for Restart",
+            delay_seconds=90,
+            target=ref(Nginx)
+        )
+
+    @action
+    def ConfigureDisk(name="Configure Disk"):
+        CalmTask.Exec.ssh(
+            name="Configure LVM Disk",
+            filename="scripts/configure_disk.sh",
+            cred=NutanixCred
+        )
+
+    @action
     def NginxInstallation(name="Nginx Installation"):
         CalmTask.Exec.ssh(
             name="Intall Nginx", 
@@ -414,6 +484,8 @@ class NginxPackage(Package):
 
     @action
     def __install__():
+        Nginx.ConfigureDisk(name="Configure Disk")
+        Nginx.UpgradeandRestartVM(name="Upgrade and Resart VM")
         Nginx.NginxInstallation(name="Nginx Installation")
 
 
