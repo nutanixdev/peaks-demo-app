@@ -1,5 +1,5 @@
 image:
-  name : Ubuntu-22.04.2
+  name : Ubuntu-22042
   type : DISK_IMAGE
   source : http://10.54.64.23/artifacts/Ubuntu-22.04.2.qcow2
   architecture : X86_64

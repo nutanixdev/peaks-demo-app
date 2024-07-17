@@ -61,7 +61,7 @@ ArtifactoryCred = basic_cred(
                 )
 
 Ubuntu22_04_Image = vm_disk_package(
-                    name="ubuntu22_04",
+                    name="ubuntu2204",
                     config_file="image_configs/ubuntu22_disk.yaml"
                 )
 
