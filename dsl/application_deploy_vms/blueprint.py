@@ -124,8 +124,8 @@ class MongoDBPackage(Package):
 
     @action
     def __install__():
-        MongoDB.ConfigureDisk(name="Configure Disk")
-        MongoDB.UpgradeandRestartVM(name="Upgrade and Resart VM")
+        #MongoDB.ConfigureDisk(name="Configure Disk")
+        #MongoDB.UpgradeandRestartVM(name="Upgrade and Resart VM")
         MongoDB.MongoDBInstallation(name="MongoDB Installation")
         MongoDB.MongoDBLoad(name="MongoDB Load")
 
@@ -136,7 +136,7 @@ class MongoDBAhvVmResources(AhvVmResources):
     vCPUs = 1
     cores_per_vCPU = 1
     disks = [
-        AhvVmDisk.Disk.Scsi.cloneFromVMDiskPackage(Ubuntu22_04_Image, bootable=True),
+        AhvVmDisk.Disk.Scsi.cloneFromVMDiskPackage(Ubuntu24_04_Image, bootable=True),
         AhvVmDisk.Disk.Scsi.allocateOnStorageContainer(30),
     ]
     nics = [
@@ -255,8 +255,8 @@ class NodeJSPackage(Package):
 
     @action
     def __install__():
-        NodeJS.ConfigureDisk(name="Configure Disk")
-        NodeJS.UpgradeandRestartVM(name="Upgrade and Resart VM")
+        #NodeJS.ConfigureDisk(name="Configure Disk")
+        #NodeJS.UpgradeandRestartVM(name="Upgrade and Resart VM")
         NodeJS.NodeJSInstallation(name="NodeJS Installation")
         NodeJS.NodejsMongoInstallForTesting(name="Nodejs Mongo Install for Testing")
 
@@ -267,7 +267,7 @@ class NodeJSAhvVmResources(AhvVmResources):
     vCPUs = 1
     cores_per_vCPU = 1
     disks = [
-        AhvVmDisk.Disk.Scsi.cloneFromVMDiskPackage(Ubuntu22_04_Image, bootable=True),
+        AhvVmDisk.Disk.Scsi.cloneFromVMDiskPackage(Ubuntu24_04_Image, bootable=True),
         AhvVmDisk.Disk.Scsi.allocateOnStorageContainer(30),
     ]
     nics = [
@@ -373,8 +373,8 @@ class NginxPackage(Package):
 
     @action
     def __install__():
-        Nginx.ConfigureDisk(name="Configure Disk")
-        Nginx.UpgradeandRestartVM(name="Upgrade and Resart VM")
+        #Nginx.ConfigureDisk(name="Configure Disk")
+        #Nginx.UpgradeandRestartVM(name="Upgrade and Resart VM")
         Nginx.NginxInstallation(name="Nginx Installation")
 
 
@@ -384,7 +384,7 @@ class NginxAhvVmResources(AhvVmResources):
     vCPUs = 1
     cores_per_vCPU = 1
     disks = [
-        AhvVmDisk.Disk.Scsi.cloneFromVMDiskPackage(Ubuntu22_04_Image, bootable=True),
+        AhvVmDisk.Disk.Scsi.cloneFromVMDiskPackage(Ubuntu24_04_Image, bootable=True),
         AhvVmDisk.Disk.Scsi.allocateOnStorageContainer(30),
     ]
     nics = [
@@ -526,7 +526,7 @@ class ApplicationDeploymentVMs(Blueprint):
             MongoDBPackage,
             NodeJSPackage,
             NginxPackage,
-            Ubuntu22_04_Image
+            Ubuntu24_04_Image
             ]
     credentials = [
             NutanixCred,
