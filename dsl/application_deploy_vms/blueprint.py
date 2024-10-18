@@ -60,6 +60,11 @@ ArtifactoryCred = basic_cred(
                     default=False
                 )
 
+Ubuntu22_04_Image = vm_disk_package(
+                    name="ubuntu2204",
+                    config_file="image_configs/ubuntu22_disk.yaml"
+                )
+
 Ubuntu24_04_Image = vm_disk_package(
                     name="ubuntu24_04",
                     config_file="image_configs/ubuntu24_disk.yaml"
@@ -131,7 +136,7 @@ class MongoDBAhvVmResources(AhvVmResources):
     vCPUs = 1
     cores_per_vCPU = 1
     disks = [
-        AhvVmDisk.Disk.Scsi.cloneFromVMDiskPackage(Ubuntu24_04_Image, bootable=True),
+        AhvVmDisk.Disk.Scsi.cloneFromVMDiskPackage(Ubuntu22_04_Image, bootable=True),
         AhvVmDisk.Disk.Scsi.allocateOnStorageContainer(30),
     ]
     nics = [
@@ -262,7 +267,7 @@ class NodeJSAhvVmResources(AhvVmResources):
     vCPUs = 1
     cores_per_vCPU = 1
     disks = [
-        AhvVmDisk.Disk.Scsi.cloneFromVMDiskPackage(Ubuntu24_04_Image, bootable=True),
+        AhvVmDisk.Disk.Scsi.cloneFromVMDiskPackage(Ubuntu22_04_Image, bootable=True),
         AhvVmDisk.Disk.Scsi.allocateOnStorageContainer(30),
     ]
     nics = [
@@ -379,7 +384,7 @@ class NginxAhvVmResources(AhvVmResources):
     vCPUs = 1
     cores_per_vCPU = 1
     disks = [
-        AhvVmDisk.Disk.Scsi.cloneFromVMDiskPackage(Ubuntu24_04_Image, bootable=True),
+        AhvVmDisk.Disk.Scsi.cloneFromVMDiskPackage(Ubuntu22_04_Image, bootable=True),
         AhvVmDisk.Disk.Scsi.allocateOnStorageContainer(30),
     ]
     nics = [
@@ -521,7 +526,7 @@ class ApplicationDeploymentVMs(Blueprint):
             MongoDBPackage,
             NodeJSPackage,
             NginxPackage,
-            Ubuntu24_04_Image
+            Ubuntu22_04_Image
             ]
     credentials = [
             NutanixCred,
