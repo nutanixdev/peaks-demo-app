@@ -138,7 +138,8 @@ class MongoDBAhvVmResources(AhvVmResources):
     disks = [
         AhvVmDisk.Disk.Scsi.cloneFromVMDiskPackage(Ubuntu24_04_Image, bootable=True),
         AhvVmDisk.Disk.Scsi.allocateOnStorageContainer(30),
-    ]
+                    
+    ] 
     nics = [
         AhvVmNic.NormalNic(NetworkConfig),
     ]
@@ -150,6 +151,7 @@ class MongoDBAhvVmResources(AhvVmResources):
 class MongoDBAhvVm(AhvVm):
 
     resources = MongoDBAhvVmResources
+    resources.disks[0].disk_size_mib=30720
     cluster = Ref.Cluster(name=ClusterName)
 
 
@@ -281,6 +283,7 @@ class NodeJSAhvVmResources(AhvVmResources):
 class NodeJSAhvVm(AhvVm):
 
     resources = NodeJSAhvVmResources
+    resources.disks[0].disk_size_mib=30720
     cluster = Ref.Cluster(name=ClusterName)
 
 
@@ -398,6 +401,7 @@ class NginxAhvVmResources(AhvVmResources):
 class NginxAhvVm(AhvVm):
 
     resources = NginxAhvVmResources
+    resources.disks[0].disk_size_mib=30720
     cluster = Ref.Cluster(name=ClusterName)
 
 
